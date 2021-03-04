@@ -1,0 +1,14 @@
+.principal-animal {
+    background-color: transparent;
+}
+.principal-animal .content-products {
+    display:flex;
+}
+.principal-animal .content-products .product {
+    margin-right: 20px;
+    background-color: white;
+    text-align: center;
+    width: 150px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
