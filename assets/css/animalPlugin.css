@@ -1,10 +1,14 @@
 .principal-animal {
     background-color: transparent;
+    min-width: 800px;
 }
-.principal-animal .content-products {
+.principal-animal .content-animal .animal-select-group {
+    display: none;
+}
+.principal-animal .content-animal .content-products {
     display:flex;
 }
-.principal-animal .content-products .product {
+.principal-animal .content-animal .content-products .product {
     margin-right: 20px;
     background-color: white;
     text-align: center;

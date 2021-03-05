@@ -2,16 +2,24 @@
 
 function plugin_woocommerceAnimalPlugin_shortCode()
 {
-    return manage_print_general(false, 'canario');
+    return manage_print_general(true, '', false);
 }
 
-function manage_print_general ($isAllRecords, $animalFind) {
+function manage_print_general ($isAllRecords, $animalFind, $isPrintContent) {
     switch ($isAllRecords) {
         case true:
-            return print_all_record_animal();
+            if (!$isPrintContent){
+                return print_all_record_animal();
+            } else {
+                return print_content_all_record_animal();
+            }
             break;
         case false:
-            return print_animal_selected($animalFind);
+            if (!$isPrintContent) {
+                return print_animal_selected($animalFind);
+            } else {
+                return print_content_animal_selected($animalFind);
+            }
             break;
     }
 }
@@ -20,10 +28,17 @@ function manage_print_general ($isAllRecords, $animalFind) {
 function print_all_record_animal () {
     return print_html_principal(get_data_categry_tag_typeAnimal(true, ""), true);
 }
+function print_content_all_record_animal() {
+    return print_html_content(get_data_categry_tag_typeAnimal(true, ""), true);
+}
 
 /*priority products*/
 function print_animal_selected ($animalFind) {
     return print_html_principal(get_data_categry_tag_typeAnimal(false, $animalFind), false);
+}
+
+function print_content_animal_selected ($animalFind) {
+    return print_html_content(get_data_categry_tag_typeAnimal(false, $animalFind), false);
 }
 
 add_shortcode('plugin_woocommerceAnimalPlugin_shortCode', 'plugin_woocommerceAnimalPlugin_shortCode');

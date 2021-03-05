@@ -42,8 +42,29 @@ function get_data_categry_tag_typeAnimal($isAllRecords, $animal)
     ORDER BY " . $wpdb->prefix . "posts.ID;";
     //echo $query;
     $get = $wpdb->get_results($query);
-
-    echo  print_r($get) ;
+    //echo  print_r($get) ;
     return $get;
 }
+
+function get_data_category_Animal () {
+    global $wpdb;
+    $get = $wpdb->get_results("
+        SELECT 
+            " . $wpdb->prefix . "terms.name, " . $wpdb->prefix . "terms.slug
+        FROM " . $wpdb->prefix . "terms
+            INNER JOIN " . $wpdb->prefix . "term_taxonomy ON " . $wpdb->prefix . "term_taxonomy.term_id = " . $wpdb->prefix . "terms.term_id
+            LEFT JOIN ( 
+                SELECT 
+                    " . $wpdb->prefix . "terms.term_id as id, if (parent = 0 && slug = 'especieanimal', true , false ) AS isAnimal
+                FROM " . $wpdb->prefix . "terms
+                    INNER JOIN " . $wpdb->prefix . "term_taxonomy ON " . $wpdb->prefix . "term_taxonomy.term_id = " . $wpdb->prefix . "terms.term_id
+                WHERE (parent = 0
+                    AND taxonomy = 'category'
+                    AND (slug='especieanimal'))
+            )r ON r.id = " . $wpdb->prefix . "term_taxonomy.parent 
+        WHERE isAnimal = 1 AND taxonomy = 'category'
+    ");
+    return $get;
+} 
+
 ?>

@@ -2,22 +2,29 @@
 
     function print_html_principal ($data, $isAllRecords) {
         $htmlGeneral = "<div class=\"principal-animal\">";
-        $htmlGeneral .= "   <div>";
+        $htmlGeneral .= "   <div class=\"content-animal\">";
         $htmlGeneral .= "       <div>";
-        $htmlGeneral .= "            <input type=\"radio\" id=\"showAllProducts\" name=\"showProducts\" value=\"showAllProducts\" data-isActive=\"1\" checked><label for=\"showAllProducts\">Mostrar todos los productos</label>";
-        $htmlGeneral .= "            <input type=\"radio\" id=\"showProductsPriority\" name=\"showProducts\" value=\"showProductsPriority\" data-isActive=\"0\"><label for=\"showProductsPriority\">Mostrar los productos por prioridad</label>";
-        $htmlGeneral .= "       <div>";
+        $htmlGeneral .= "            <input type=\"radio\" id=\"showAllProducts\" name=\"showProducts\" value=\"showAllProducts\" data-isActive=\"1\" checked /><label for=\"showAllProducts\">Mostrar todos los productos</label>";
+        $htmlGeneral .= "            <input type=\"radio\" id=\"showProductsPriority\" name=\"showProducts\" value=\"showProductsPriority\" data-isActive=\"0\" /><label for=\"showProductsPriority\">Mostrar los productos por prioridad</label>";
+        $htmlGeneral .= "       </div>";
+        $htmlGeneral .= "       <div class=\"animal-select-group\" id=\"animalSelect\">";
+        $htmlGeneral .= print_html_select_category();
+        //$htmlGeneral .= "            <input type=\"radio\" id=\"dog\" class=\"animal-select\" name=\"animals\" value=\"perro\"/><label for=\"dog\">Perro</label>";
+        //$htmlGeneral .= "            <input type=\"radio\" id=\"cat\" class=\"animal-select\" name=\"animals\" value=\"gato\" /><label for=\"cat\">Gato</label>";
+        //$htmlGeneral .= "            <input type=\"radio\" id=\"canary\" class=\"animal-select\" name=\"animals\" value=\"canario\" /><label for=\"canary\">Canario</label>";
+        $htmlGeneral .= "       </div>";
+        $htmlGeneral .= "       <div class=\"content-products\">";
         $htmlGeneral .= print_html_content($data, $isAllRecords);
+        $htmlGeneral .= "       </div>";
         $htmlGeneral .= "   </div>";
         $htmlGeneral .= "</div>";
         return $htmlGeneral;
     }
-
+    
     function print_html_content ($data, $isAllRecords) {
         $htmlGeneralContent = "";
         if (is_array($data)){
             $products = management_information($data, $isAllRecords);
-            $htmlGeneralContent .= '<div class="content-products">';
             if (is_array($products)) {
                 for($i = 0 ; $i < sizeof($products); $i++) {
                     $tag = "";
@@ -31,9 +38,24 @@
                     }
                 }
             }
-            $htmlGeneralContent .= "</div>";
         } 
         return $htmlGeneralContent;
+    }
+
+    function print_html_select_category() {
+        $dataCategory = get_data_category_Animal();
+        $htmlSelect = "";
+        if (is_array($dataCategory)){
+            for($i = 0; $i < sizeof($dataCategory); $i++) {
+                if (isset($dataCategory[$i]->name) && isset($dataCategory[$i]->slug)){
+                    $slugTemp = $dataCategory[$i]->slug;
+                    $nameTemp = $dataCategory[$i]->name;
+                    $htmlSelect .=  "<input type=\"radio\" id=\"" . $slugTemp . "\" class=\"animal-select\" name=\"animals\" value=\"" . $slugTemp. "\"/><label for=\"dog\">" . $nameTemp . "</label>     ";
+                }
+            }
+
+        }
+        return $htmlSelect;
     }
 
     function management_information($data, $isAllRecords)
@@ -104,7 +126,6 @@
                 }
             }
         }
-        echo print_r($arrayTempGeneral);
         return $arrayTempGeneral;
     }
 
